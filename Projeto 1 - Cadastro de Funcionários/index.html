@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>MEU RH</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <form id="form-cadastro" class="form-padrao" onsubmit="cadastrar(event)">
+
+        <div class="input-texto">
+            <label for="nome">Nome: </label>
+            <input id="nome" placeholder="Digite o nome">
+        </div>
+
+        <div class="input-texto">
+            <label for="cargo">Cargo: </label>
+            <input id="cargo" placeholder="Cargo">
+        </div>
+
+        <div class="input-texto">
+            <label for="email">Email: </label>
+            <input id="email" type="email" placeholder="Email">
+        </div>
+
+        <button type="submit">CADASTRAR</button>
+
+    </form>
+
+    <h1>Lista de Funcionários</h1>
+
+    <ul id="lista-funcionarios">
+        
+    </ul>
+
+
+    <script src="script.js"></script>
+</body>
+
+
+</html>
