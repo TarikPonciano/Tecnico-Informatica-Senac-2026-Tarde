@@ -26,9 +26,18 @@ function cadastrar(e){
     // Mostrar o funcionário no HTML
 
     const listaFunc = document.getElementById("lista-funcionarios")
-
+        
     const novoFuncionario = document.createElement("li")
-    novoFuncionario.innerHTML = `Nome - ${nome} | Cargo - ${cargo} | Email - ${email}`
+    novoFuncionario.innerHTML = `Nome - ${nome} | Cargo - ${cargo} | Email - ${email} | `
+
+    const botaoRemover = document.createElement("button")
+    botaoRemover.textContent = "REMOVER"
+    botaoRemover.onclick = () => {novoFuncionario.remove()}
+    novoFuncionario.append(botaoRemover)
+
+    // <button onclick="this.parentElement.remove()">REMOVER</button>
+
+
 
     listaFunc.appendChild(novoFuncionario)
 }
