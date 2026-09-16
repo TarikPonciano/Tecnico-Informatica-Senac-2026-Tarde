@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oficina: Stack Web Nativa — HTML, CSS e JS</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+  :root {
+    --bg:#14161c; --panel:#1c1f28; --panel-2:#232733; --ink:#e8eaf0; --muted:#8b91a4;
+    --line:#2e3340; --amber:#f5b642; --cyan:#5cc8e0; --green:#7bd88f; --pink:#e069a8; --purple:#b78af0;
+    --display:'Space Grotesk',sans-serif; --mono:'JetBrains Mono',monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{height:100%;}
+  body{background:var(--bg);color:var(--ink);font-family:var(--display);overflow:hidden;}
+  .deck{height:100vh;width:100vw;position:relative;}
+  .slide{position:absolute;inset:0;display:none;flex-direction:column;padding:5vh 6vw 8vh;overflow-y:auto;}
+  .slide.active{display:flex;animation:rise .4s cubic-bezier(.2,.7,.3,1);}
+  @keyframes rise{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+  @media (prefers-reduced-motion:reduce){.slide.active{animation:none;}}
+  .chrome{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:13px;color:var(--muted);margin-bottom:3.5vh;flex-shrink:0;}
+  .dot{width:12px;height:12px;border-radius:50%;}
+  .dot.r{background:#ff5f57;}.dot.y{background:#febc2e;}.dot.g{background:#28c840;}
+  .chrome .path{margin-left:12px;}
+  .chrome .path b{color:var(--ink);font-weight:500;}
+  h1{font-size:clamp(2.2rem,5.5vw,4rem);font-weight:700;line-height:1.03;letter-spacing:-0.02em;}
+  h2{font-size:clamp(1.6rem,3.6vw,2.6rem);font-weight:600;letter-spacing:-0.015em;margin-bottom:3vh;}
+  h2 .num{font-family:var(--mono);color:var(--amber);font-weight:500;margin-right:14px;}
+  p{font-size:clamp(1.05rem,1.6vw,1.35rem);line-height:1.5;color:var(--muted);max-width:60ch;}
+  p strong{color:var(--ink);font-weight:500;}
+  .lead{font-size:clamp(1.15rem,2vw,1.5rem);color:var(--ink);}
+  .kicker{font-family:var(--mono);font-size:14px;color:var(--cyan);margin-bottom:3vh;}
+  .kicker::before{content:'// ';color:var(--line);}
+  code.inl{font-family:var(--mono);color:var(--cyan);font-size:.92em;}
+  pre{background:#0f1116;border:1px solid var(--line);border-radius:10px;padding:22px 24px;font-family:var(--mono);font-size:clamp(.82rem,1.2vw,1.08rem);line-height:1.7;overflow-x:auto;color:#cdd3e0;}
+  pre .c{color:#5f6675;font-style:italic;}
+  pre .t{color:var(--pink);}
+  pre .a{color:var(--amber);}
+  pre .s{color:var(--green);}
+  pre .k{color:var(--purple);}
+  pre .f{color:var(--cyan);}
+  pre .p{color:#8b91a4;}
+  pre .n{color:#e2955c;}
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:3vw;align-items:center;flex:1;min-height:0;}
+  .cols.top{align-items:start;}
+  .stack{display:flex;flex-direction:column;gap:2.4vh;}
+  ul.clean{list-style:none;display:flex;flex-direction:column;gap:1.8vh;}
+  ul.clean li{display:flex;gap:14px;align-items:baseline;font-size:clamp(1.05rem,1.6vw,1.3rem);color:var(--ink);}
+  ul.clean li .m{font-family:var(--mono);color:var(--amber);flex-shrink:0;min-width:fit-content;}
+  ul.clean li div{color:var(--muted);}
+  ul.clean li strong{color:var(--ink);}
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:28px 26px;}
+  .card .lang{font-family:var(--mono);font-size:13px;margin-bottom:14px;}
+  .card.html .lang{color:var(--pink);}
+  .card.css .lang{color:var(--cyan);}
+  .card.js .lang{color:var(--amber);}
+  .card h3{font-size:1.4rem;font-weight:600;margin-bottom:8px;}
+  .card p{font-size:1.05rem;}
+  .tag{font-family:var(--mono);font-size:13px;color:var(--muted);}
+  .badge{display:inline-block;font-family:var(--mono);font-size:12px;background:var(--panel-2);border:1px solid var(--line);color:var(--muted);padding:4px 10px;border-radius:6px;}
+  .note{border-left:3px solid var(--amber);padding:2px 0 2px 18px;color:var(--muted);font-size:clamp(1rem,1.5vw,1.25rem);line-height:1.45;}
+  .note b{color:var(--amber);font-weight:500;}
+  .task{border-left:3px solid var(--cyan);padding:8px 0 8px 18px;color:var(--muted);font-size:clamp(1rem,1.5vw,1.22rem);line-height:1.45;}
+  .task .lbl{font-family:var(--mono);font-size:12px;color:var(--cyan);display:block;margin-bottom:4px;}
+  .task .lbl::before{content:'▸ sua vez · ';color:var(--line);}
+  .task b{color:var(--ink);font-weight:500;}
+  .task code{font-family:var(--mono);color:var(--cyan);font-size:.9em;}
+  .task.expand{border-left-color:var(--green);}
+  .task.expand .lbl{color:var(--green);}
+  .task.expand .lbl::before{content:'✦ expanda · ';color:var(--line);}
+  .task.expand code{color:var(--green);}
+  .center{justify-content:center;align-items:flex-start;}
+  .live-demo{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:14px;}
+  .live-demo input{background:#0f1116;border:1px solid var(--line);border-radius:8px;padding:12px 13px;color:var(--ink);font-family:var(--display);font-size:1rem;}
+  .live-demo input:focus{outline:2px solid var(--cyan);outline-offset:1px;border-color:transparent;}
+  .live-demo .row{display:flex;gap:12px;}
+  .live-demo .row input{flex:1;}
+  .live-demo button{background:var(--amber);color:#14161c;border:none;border-radius:8px;padding:13px;font-family:var(--display);font-weight:600;font-size:1rem;cursor:pointer;}
+  .live-demo button:hover{filter:brightness(1.08);}
+  .live-demo ul.result{list-style:none;display:flex;flex-direction:column;gap:8px;margin-top:4px;}
+  .live-demo ul.result li{display:flex;justify-content:space-between;align-items:center;gap:10px;background:#0f1116;border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-size:.92rem;}
+  .live-demo ul.result li .info b{color:var(--ink);font-weight:500;}
+  .live-demo ul.result li .info span{color:var(--muted);font-size:.85rem;}
+  .live-demo .rm{cursor:pointer;color:var(--pink);font-family:var(--mono);font-size:.8rem;border:none;background:transparent;padding:4px 6px;}
+  .live-demo .err{color:var(--pink);font-size:.88rem;font-family:var(--mono);min-height:1.1em;}
+  .live-demo .empty{color:var(--muted);font-style:italic;font-size:.9rem;padding:4px 2px;}
+  .footer{position:fixed;bottom:0;left:0;right:0;display:flex;align-items:center;justify-content:space-between;padding:14px 6vw;font-family:var(--mono);font-size:12px;color:var(--muted);pointer-events:none;}
+  .footer .count{color:var(--ink);}
+  .progress{position:fixed;top:0;left:0;height:3px;background:var(--amber);transition:width .3s ease;z-index:10;}
+  .hint{position:fixed;bottom:46px;right:6vw;font-family:var(--mono);font-size:11px;color:var(--line);}
+  .flow{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:1vh;}
+  .flow .step{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px 22px;font-family:var(--mono);font-size:clamp(.9rem,1.3vw,1.1rem);}
+  .flow .step b{color:var(--amber);}
+  .flow .arrow{color:var(--line);font-size:1.5rem;}
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<div class="deck" id="deck">
+
+  <section class="slide active center">
+    <div class="chrome"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="path">~/oficina/<b>index.html</b></span></div>
+    <div class="kicker">a plataforma já está no navegador</div>
+    <h1>Stack nativa da web:<br>HTML, CSS e JS</h1>
+    <p class="lead" style="margin-top:3vh">Vamos montar um cadastro de funcionários do zero.</p>
+    <div style="margin-top:4vh;display:flex;gap:12px;flex-wrap:wrap">
+      <span class="badge">estrutura</span><span class="badge">aparência</span><span class="badge">comportamento</span>
+    </div>
+  </section>
+
+  <section class="slide">
+    <div class="chrome"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="path">~/oficina/</span></div>
+    <h2><span class="num">01</span>Três arquivos, três papéis</h2>
+    <div class="cards">
+      <div class="card html"><div class="lang">index.html</div><h3>Estrutura</h3><p>O que existe na página.</p></div>
+      <div class="card css"><div class="lang">style.css</div><h3>Aparência</h3><p>Como se parece.</p></div>
+      <div class="card js"><div class="lang">app.js</div><h3>Comportamento</h3><p>O que acontece ao usar.</p></div>
+    </div>
+    <p style="margin-top:4vh">O HTML liga os outros dois: <code class="inl">&lt;link&gt;</code> traz o CSS, <code class="inl">&lt;script&gt;</code> traz o JS.</p>
+  </section>
+
+  <section class="slide">
+    <div class="chrome"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="path"><b>index.html</b></span></div>
+    <h2><span class="num">02</span>O esqueleto</h2>
+    <div class="cols">
+      <pre><span class="p">&lt;!</span><span class="k">DOCTYPE</span> <span class="a">html</span><span class="p">&gt;</span>
+<span class="t">&lt;html</span> <span class="a">lang</span>=<span class="s">"pt-BR"</span><span class="t">&gt;</span>
+<span class="t">&lt;head&gt;</span>
+  <span class="t">&lt;meta</span> <span class="a">charset</span>=<span class="s">"UTF-8"</span><span class="t">&gt;</span>
+  <span class="t">&lt;title&gt;</span>Cadastro<span class="t">&lt;/title&gt;</span>
+  <span class="t">&lt;link</span> <span class="a">rel</span>=<span class="s">"stylesheet"</span> <span class="a">href</span>=<span class="s">"style.css"</span><span class="t">&gt;</span>
+<span class="t">&lt;/head&gt;</span>
+<span class="t">&lt;body&gt;</span>
+
+  <span class="c">&lt;!-- conteúdo aqui --&gt;</span>
+
+  <span class="t">&lt;script</span> <span class="a">src</span>=<span class="s">"app.js"</span><span class="t">&gt;&lt;/script&gt;</span>
+<span class="t">&lt;/body&gt;</span>
+<span class="t">&lt;/html&gt;</span></pre>
+      <ul class="clean">
+        <li><span class="m">head</span> <div>não aparece na tela</div></li>
+        <li><span class="m">body</span> <div>o que o usuário vê</div></li>
+        <li><span class="m">link</span> <div>conecta o CSS</div></li>
+        <li><span class="m">script</span> <div>conecta o JS — no fim, para o HTML já existir</div></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="slide">
+    <div class="chrome"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="path"><b>index.html</b> · &lt;body&gt;</span></div>
+    <h2><span class="num">03</span>Formulário e lista</h2>
+    <div class="cols">
+      <pre><span class="t">&lt;form</span> <span class="a">onsubmit</span>=<span class="s">"cadastrar(event)"</span><span class="t">&gt;</span>
+  <span class="t">&lt;input</span> <span class="a">id</span>=<span class="s">"nome"</span>  <span class="a">placeholder</span>=<span class="s">"Nome"</span><span class="t">&gt;</span>
+  <span class="t">&lt;input</span> <span class="a">id</span>=<span class="s">"cargo"</span> <span class="a">placeholder</span>=<span class="s">"Cargo"</span><span class="t">&gt;</span>
+  <span class="t">&lt;input</span> <span class="a">id</span>=<span class="s">"email"</span> <span class="a">placeholder</span>=<span class="s">"E-mail"</span><span class="t">&gt;</span>
+  <span class="t">&lt;button&gt;</span>Adicionar<span class="t">&lt;/button&gt;</span>
+<span class="t">&lt;/form&gt;</span>
+
+<span class="t">&lt;p</span> <span class="a">id</span>=<span class="s">"erro"</span><span class="t">&gt;&lt;/p&gt;</span>
+
+<span class="c">&lt;!-- a lista começa vazia --&gt;</span>
+<span class="t">&lt;ul</span> <span class="a">id</span>=<span class="s">"lista"</span><span class="t">&gt;&lt;/ul&gt;</span></pre>
+      <div class="stack">
+        <ul class="clean">
+          <li><span class="m">onsubmit</span> <div>chama <code class="inl">cadastrar</code> ao enviar</div></li>
+          <li><span class="m">id</span> <div>o nome pelo qual o JS pega o campo</div></li>
+          <li><span class="m">&lt;ul&gt;</span> <div>lista vazia — o JS insere os <code class="inl">&lt;li&gt;</code></div></li>
+        </ul>
+        <div class="task"><span class="lbl">o formulário</span>Monte o <b>&lt;form&gt;</b> com os três campos, o botão e a <b>&lt;ul&gt;</b> vazia no seu <code>index.html</code>.</div>
+        <div class="task expand"><span class="lbl">mais campos</span>Acrescente um campo à sua escolha — <code>setor</code>, <code>salário</code> ou <code>telefone</code> — lembrando de dar um <code>id</code> a ele.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide">
+    <div class="chrome"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="path"><b>style.css</b></span></div>
+    <h2><span class="num">04</span>A aparência</h2>
+    <div class="cols">
+      <pre><span class="c">/* pelo tipo */</span>
+<span class="f">body</span> <span class="p">{</span>
+  <span class="n">font-family</span><span class="p">:</span> system-ui<span class="p">;</span>
+  <span class="n">max-width</span><span class="p">:</span> <span class="n">640px</span><span class="p">;</span>
+  <span class="n">margin</span><span class="p">:</span> <span class="n">2rem</span> auto<span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c">/* pelo id -> # */</span>
+<span class="a">#erro</span> <span class="p">{</span> <span class="n">color</span><span class="p">:</span> crimson<span class="p">;</span> <span class="p">}</span>
+
+<span class="c">/* pela classe -> . */</span>
+<span class="a">.remover</span> <span class="p">{</span> <span class="n">cursor</span><span class="p">:</span> pointer<span class="p">;</span> <span class="p">}</span></pre>
+      <ul class="clean">
+        <li><span class="m">body</span> <div>seleciona pela tag</div></li>
+        <li><span class="m">#erro</span> <div><code class="inl">#</code> seleciona por id</div></li>
+        <li><span class="m">.remover</span> <div><code class="inl">.</code> seleciona por classe</div></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="slide center">
+    <div class="chrome"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="path"><b>app.js</b></span></div>
+    <div class="kicker">o coração da oficina</div>
+    <h2 style="margin-bottom:2vh"><span class="num">05</span>A função <code class="inl" style="font-size:.85em">cadastrar</code> faz três coisas</h2>
+    <div class="flow">
+      <div class="step"><b>1.</b> lê os campos</div><span class="arrow">-&gt;</span>
+      <div class="step"><b>2.</b> valida</div><span class="arrow">-&gt;</span>
+      <div class="step"><b>3.</b> cria o item</div>
+    </div>
+  </section>
+
+  <section class="slide">
+    <div class="chrome"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="path"><b>app.js</b> · ler e validar</span></div>
+    <h2><span class="num">06</span>Ler e validar</h2>
+    <div class="cols top">
+      <pre><span class="k">function</span> <span class="f">cadastrar</span>(evento) <span class="p">{</span>
+  evento.<span class="f">preventDefault</span>()<span class="p">;</span> <span class="c">// não recarrega</span>
+
+  <span class="k">const</span> nome  = <span class="f">document</span>.<span class="f">getElementById</span>(<span class="s">"nome"</span>).value<span class="p">;</span>
+  <span class="k">const</span> cargo = <span class="f">document</span>.<span class="f">getElementById</span>(<span class="s">"cargo"</span>).value<span class="p">;</span>
+  <span class="k">const</span> email = <span class="f">document</span>.<span class="f">getElementById</span>(<span class="s">"email"</span>).value<span class="p">;</span>
+
+  <span class="k">const</span> erro = <span class="f">document</span>.<span class="f">getElementById</span>(<span class="s">"erro"</span>)<span class="p">;</span>
+
+  <span class="k">if</span> (!nome || !cargo || !email) <span class="p">{</span>
+    erro.textContent = <span class="s">"Preencha tudo."</span><span class="p">;</span>
+    <span class="k">return</span><span class="p">;</span>
+  <span class="p">}</span></pre>
+      <div class="stack">
+        <ul class="clean">
+          <li><span class="m">.value</span> <div>o texto digitado</div></li>
+          <li><span class="m">preventDefault</span> <div>evita recarregar a página</div></li>
+          <li><span class="m">if + return</span> <div>vazio? mostra o erro e para</div></li>
+        </ul>
+        <div class="task"><span class="lbl">validação</span>Faça a leitura dos três campos e a checagem de vazio. Se algum estiver em branco, mostre a mensagem em <code>#erro</code> e interrompa.</div>
+        <div class="task expand"><span class="lbl">valide também o campo novo</span>Leia o campo que você adicionou e inclua-o na checagem de obrigatório, com sua própria mensagem de erro.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide">
+    <div class="chrome"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="path"><b>app.js</b> · criar o item</span></div>
+    <h2><span class="num">07</span>Criar o item da lista</h2>
+    <div class="cols top">
+      <pre>  <span class="c">// cria o &lt;li&gt;</span>
+  <span class="k">const</span> item = <span class="f">document</span>.<span class="f">createElement</span>(<span class="s">"li"</span>)<span class="p">;</span>
+  item.textContent = <span class="s">`${nome} — ${cargo} (${email})`</span><span class="p">;</span>
+
+  <span class="c">// insere na lista</span>
+  <span class="f">document</span>.<span class="f">getElementById</span>(<span class="s">"lista"</span>)
+          .<span class="f">appendChild</span>(item)<span class="p">;</span>
+<span class="p">}</span></pre>
+      <div class="stack">
+        <ul class="clean">
+          <li><span class="m">createElement</span> <div>fabrica o <code class="inl">&lt;li&gt;</code></div></li>
+          <li><span class="m">textContent</span> <div>escreve o texto do item</div></li>
+          <li><span class="m">appendChild</span> <div>insere — só aqui aparece na tela</div></li>
+        </ul>
+        <div class="task"><span class="lbl">inserir na lista</span>Crie o <code>&lt;li&gt;</code> com os dados do funcionário e insira na <code>#lista</code>. Cadastre alguns e veja os itens nascerem.</div>
+        <div class="task expand"><span class="lbl">mostre o campo novo</span>Inclua o dado que você adicionou no texto do <code>&lt;li&gt;</code>, para que ele apareça junto no item da lista.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide">
+    <div class="chrome"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="path"><b>app.js</b> · remover</span></div>
+    <h2><span class="num">08</span>Botão de remover</h2>
+    <div class="cols top">
+      <pre>  <span class="c">// botão dentro do item</span>
+  <span class="k">const</span> btn = <span class="f">document</span>.<span class="f">createElement</span>(<span class="s">"button"</span>)<span class="p">;</span>
+  btn.textContent = <span class="s">"remover"</span><span class="p">;</span>
+  btn.<span class="f">onclick</span> = <span class="k">function</span>() <span class="p">{</span>
+    item.<span class="f">remove</span>()<span class="p">;</span> <span class="c">// tira da tela</span>
+  <span class="p">}</span><span class="p">;</span>
+
+  item.<span class="f">appendChild</span>(btn)<span class="p">;</span></pre>
+      <div class="stack">
+        <ul class="clean">
+          <li><span class="m">button</span> <div>um botão por item</div></li>
+          <li><span class="m">onclick</span> <div>o que fazer ao clicar</div></li>
+          <li><span class="m">item.remove()</span> <div>apaga aquele item da lista</div></li>
+        </ul>
+        <div class="task"><span class="lbl">remover</span>Adicione um botão <b>remover</b> a cada item, que apague só aquele funcionário ao ser clicado.</div>
+        <div class="task expand"><span class="lbl">limpe o formulário</span>Depois de inserir na lista, faça o formulário voltar a ficar vazio para o próximo cadastro (dica: <code>form.reset()</code>).</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide">
+    <div class="chrome"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="path"><b>demo</b> · funcionando</span></div>
+    <h2><span class="num">09</span>Rodando de verdade</h2>
+    <div class="cols">
+      <div class="live-demo">
+        <div class="row"><input id="d-nome" placeholder="Nome"><input id="d-cargo" placeholder="Cargo"></div>
+        <input id="d-email" placeholder="E-mail">
+        <button id="d-add">Adicionar</button>
+        <div class="err" id="d-erro"></div>
+        <ul class="result" id="d-lista"><li class="empty" style="justify-content:flex-start">Vazio ainda.</li></ul>
+      </div>
+      <ul class="clean">
+        <li><span class="m">-&gt;</span> <div>envie com campo vazio</div></li>
+        <li><span class="m">-&gt;</span> <div>cadastre e veja o item nascer</div></li>
+        <li><span class="m">-&gt;</span> <div>clique em <strong>remover</strong></div></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="slide center">
+    <div class="chrome"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="path">resumo.md</span></div>
+    <h2 style="margin-bottom:2vh"><span class="num">10</span>O ciclo que se repete</h2>
+    <div class="flow">
+      <div class="step"><b>evento</b></div><span class="arrow">-&gt;</span>
+      <div class="step"><b>ler</b></div><span class="arrow">-&gt;</span>
+      <div class="step"><b>validar</b></div><span class="arrow">-&gt;</span>
+      <div class="step"><b>atualizar tela</b></div>
+    </div>
+    <p style="margin-top:4vh">Carrinho, feed, cadastro — sempre o mesmo laço. Frameworks só automatizam isso.</p>
+  </section>
+
+  <section class="slide center">
+    <div class="chrome"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="path">~/oficina/<b>fim</b></span></div>
+    <div class="kicker">terreno pronto</div>
+    <h1>HTML estrutura ·<br>CSS veste · JS age.</h1>
+    <p class="lead" style="margin-top:3vh">Ler, validar, criar, remover. Esse é o ofício.</p>
+  </section>
+
+</div>
+
+<div class="footer">
+  <span>Oficina · Stack Web Nativa</span>
+  <span><span class="count" id="cur">1</span> / <span id="total">12</span></span>
+</div>
+<div class="hint">&lt;- -&gt; ou espaço</div>
+
+<script>
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const progress = document.getElementById('progress');
+  const cur = document.getElementById('cur');
+  document.getElementById('total').textContent = slides.length;
+  let i = 0;
+  function show(n){
+    i = Math.max(0, Math.min(slides.length-1, n));
+    slides.forEach((s,k)=>s.classList.toggle('active', k===i));
+    progress.style.width = ((i+1)/slides.length*100)+'%';
+    cur.textContent = i+1;
+    slides[i].scrollTop = 0;
+  }
+  document.addEventListener('keydown',(e)=>{
+    if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown'){e.preventDefault();show(i+1);}
+    if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();show(i-1);}
+    if(e.key==='Home')show(0);
+    if(e.key==='End')show(slides.length-1);
+  });
+  let tx=0;
+  document.addEventListener('touchstart',e=>tx=e.changedTouches[0].clientX,{passive:true});
+  document.addEventListener('touchend',e=>{
+    const dx=e.changedTouches[0].clientX-tx;
+    if(Math.abs(dx)>50)show(dx<0?i+1:i-1);
+  },{passive:true});
+  show(0);
+
+  const dLista=document.getElementById('d-lista');
+  const dErro=document.getElementById('d-erro');
+  function cadastrar(){
+    const nome=document.getElementById('d-nome').value.trim();
+    const cargo=document.getElementById('d-cargo').value.trim();
+    const email=document.getElementById('d-email').value.trim();
+    dErro.textContent='';
+    if(!nome||!cargo||!email){dErro.textContent='Preencha tudo.';return;}
+    const vazio=dLista.querySelector('.empty');
+    if(vazio)dLista.innerHTML='';
+    const item=document.createElement('li');
+    const info=document.createElement('span');
+    info.className='info';
+    info.innerHTML=`<b>${nome}</b> <span>— ${cargo} (${email})</span>`;
+    const btn=document.createElement('button');
+    btn.className='rm';
+    btn.textContent='remover';
+    btn.onclick=function(){
+      item.remove();
+      if(!dLista.children.length){dLista.innerHTML='<li class="empty" style="justify-content:flex-start">Vazio ainda.</li>';}
+    };
+    item.appendChild(info);
+    item.appendChild(btn);
+    dLista.appendChild(item);
+    document.getElementById('d-nome').value='';
+    document.getElementById('d-cargo').value='';
+    document.getElementById('d-email').value='';
+    document.getElementById('d-nome').focus();
+  }
+  document.getElementById('d-add').addEventListener('click',cadastrar);
+  ['d-nome','d-cargo','d-email'].forEach(id=>{
+    document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')cadastrar();});
+  });
+</script>
+</body>
+</html>
