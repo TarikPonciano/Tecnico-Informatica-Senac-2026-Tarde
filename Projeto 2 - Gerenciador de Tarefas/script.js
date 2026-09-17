@@ -38,6 +38,15 @@ function renderizar(){
         
         cardTarefa.innerHTML = `${tarefa["titulo"]} - ${tarefa["estado"]}`
 
+        const botaoCompletar = document.createElement("button")
+        botaoCompletar.onclick = () => {
+            tarefa["estado"] = "completo"
+            renderizar() 
+        }
+        botaoCompletar.textContent = "COMPLETAR"
+
+        cardTarefa.appendChild(botaoCompletar)
+
         document.getElementById("lista-tarefas").appendChild(cardTarefa)
     })
 }
