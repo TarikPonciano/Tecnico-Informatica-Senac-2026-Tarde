@@ -31,7 +31,8 @@ function cadastrarTarefa(e){
 function renderizar(){
     // Lembrar de zerar o elemento que segura os cards
     document.getElementById("lista-tarefas").innerHTML = ""
-    
+
+    // Usamos a arrow function () => {}
     listaTarefas.forEach((tarefa) => {
         const cardTarefa = document.createElement("li")
         
