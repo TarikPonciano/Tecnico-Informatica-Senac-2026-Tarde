@@ -16,11 +16,27 @@ function cadastrarTarefa(e){
     listaTarefas.push(novaTarefa)
 
     alert("Tarefa Cadastrada com Sucesso!")
+
+    renderizar()
     
     document.getElementById("form-cadastro").reset()
+    
 }
 
 // Construir uma função chamada renderizarTarefas
 // 1. Ler a lista de tarefas
 // 2. Criar um novo li para cada tarefa
 // 3. Adicionar os li criados em um elemento(ul) chamado lista de tarefas
+
+function renderizar(){
+    // Lembrar de zerar o elemento que segura os cards
+    document.getElementById("lista-tarefas").innerHTML = ""
+    
+    listaTarefas.forEach((tarefa) => {
+        const cardTarefa = document.createElement("li")
+        
+        cardTarefa.innerHTML = `${tarefa["titulo"]} - ${tarefa["estado"]}`
+
+        document.getElementById("lista-tarefas").appendChild(cardTarefa)
+    })
+}
