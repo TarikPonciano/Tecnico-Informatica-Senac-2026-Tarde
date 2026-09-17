@@ -33,7 +33,7 @@ function renderizar(){
     document.getElementById("lista-tarefas").innerHTML = ""
 
     // Usamos a arrow function () => {}
-    listaTarefas.forEach((tarefa) => {
+    listaTarefas.forEach((tarefa, indice) => {
         const cardTarefa = document.createElement("li")
         
         cardTarefa.innerHTML = `${tarefa["titulo"]} - ${tarefa["estado"]}`
@@ -44,8 +44,34 @@ function renderizar(){
             renderizar() 
         }
         botaoCompletar.textContent = "COMPLETAR"
-
+        botaoCompletar.classList.add("botao-completar")
         cardTarefa.appendChild(botaoCompletar)
+
+        const botaoCancelar = document.createElement("button")
+        botaoCancelar.onclick = () => {
+            tarefa["estado"] = "cancelada"
+            renderizar()
+        }
+        botaoCancelar.textContent = "CANCELAR"
+        botaoCancelar.classList.add("botao-cancelar")
+        cardTarefa.appendChild(botaoCancelar)
+
+        const botaoRemover = document.createElement("button")
+        botaoRemover.onclick = () => {
+            listaTarefas.splice(indice, 1)
+            renderizar()
+        }
+    
+        botaoRemover.textContent = "Remover"
+        cardTarefa.appendChild(botaoRemover)
+
+        
+        // if (tarefa["estado"] == "pendente"){
+        //     cardTarefa.classList.add("tarefa-pendente")
+        // }
+        cardTarefa.classList.add(`tarefa-${tarefa["estado"]}`)
+
+        
 
         document.getElementById("lista-tarefas").appendChild(cardTarefa)
     })
