@@ -1,4 +1,6 @@
-const listaTarefas = []
+let listaTarefas = []
+
+renderizar()
 
 function cadastrarTarefa(e){
     e.preventDefault()
@@ -6,6 +8,12 @@ function cadastrarTarefa(e){
     // 1. Coletar Dados
     const titulo = document.getElementById("titulo").value
 
+    // Verifica se titulo está vazio
+    if (!titulo){
+        alert("Dados faltantes")
+        return
+    }
+    
     // 2. Estruturar os dados (compilar/montar)
     const novaTarefa = {
         "titulo": titulo,
@@ -14,6 +22,7 @@ function cadastrarTarefa(e){
 
     // 3. Armazenar os dados 
     listaTarefas.push(novaTarefa)
+    salvarDados()
 
     alert("Tarefa Cadastrada com Sucesso!")
 
@@ -29,6 +38,8 @@ function cadastrarTarefa(e){
 // 3. Adicionar os li criados em um elemento(ul) chamado lista de tarefas
 
 function renderizar(){
+
+    listaTarefas = carregarDados()
     // Lembrar de zerar o elemento que segura os cards
     document.getElementById("lista-tarefas").innerHTML = ""
 
@@ -41,6 +52,7 @@ function renderizar(){
         const botaoCompletar = document.createElement("button")
         botaoCompletar.onclick = () => {
             tarefa["estado"] = "completo"
+            salvarDados()
             renderizar() 
         }
         botaoCompletar.textContent = "COMPLETAR"
@@ -50,6 +62,7 @@ function renderizar(){
         const botaoCancelar = document.createElement("button")
         botaoCancelar.onclick = () => {
             tarefa["estado"] = "cancelada"
+            salvarDados()
             renderizar()
         }
         botaoCancelar.textContent = "CANCELAR"
@@ -59,6 +72,7 @@ function renderizar(){
         const botaoRemover = document.createElement("button")
         botaoRemover.onclick = () => {
             listaTarefas.splice(indice, 1)
+            salvarDados()
             renderizar()
         }
     
@@ -75,4 +89,22 @@ function renderizar(){
 
         document.getElementById("lista-tarefas").appendChild(cardTarefa)
     })
+}
+
+function salvarDados(){
+
+    localStorage.setItem("tarefas", JSON.stringify(listaTarefas))
+
+}
+
+function carregarDados(){
+
+    const tarefasLocalStorage = JSON.parse(localStorage.getItem("tarefas"))
+
+    if (!tarefasLocalStorage){
+        return []
+    }
+
+    return tarefasLocalStorage
+    
 }
