@@ -1,0 +1,1 @@
+nomeCurso = "Técnico de Barbearia"
