@@ -19,14 +19,10 @@ if (idade >= 0 && idade <= 13) {
     faixaEtaria = "Adolescente"
 } else if (idade >= 20 && idade <= 69) {
     faixaEtaria = "Adulto"
-} else if (idade >= 70){
+} else if (idade >= 70) {
     faixaEtaria = "Sênior"
-} else{
+} else {
     faixaEtaria = "Alienigena 👽"
 }
 
 console.log(`Idade: ${idade} anos -> Faixa Etária: ${faixaEtaria}`)
-
-function calcularIdadeDesafio(){
-
-}
