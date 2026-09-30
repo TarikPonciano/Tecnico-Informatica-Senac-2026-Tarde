@@ -1,3 +1,5 @@
+import { input } from "@inquirer/prompts";
+
 const nascimento = await input({ message: "Digite sua data de nascimento no padrão internacional 'ano-mes-dia':" })
 
 const dataNascimento = new Date(nascimento + "T00:00");
@@ -23,3 +25,5 @@ if (idade >= 0 && idade <= 13) {
 } else {
     faixaEtaria = "Alienigena 👽"
 }
+
+console.log(`Idade: ${idade} anos -> Faixa Etária: ${faixaEtaria}`)
