@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "inquirer": "^14.2.2"
+  }
+}
