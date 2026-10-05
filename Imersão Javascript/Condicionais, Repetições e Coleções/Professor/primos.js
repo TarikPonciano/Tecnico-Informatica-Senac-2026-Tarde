@@ -5,6 +5,7 @@ import { input, number } from "@inquirer/prompts"
 
 let numero = 2
 let qtdPrimos = 0
+let somaPrimos = 0
 
 while (qtdPrimos < 10){
 
@@ -18,8 +19,11 @@ while (qtdPrimos < 10){
     if (qtdDivisores == 0){
         console.log(`${numero} é primo!`)
         qtdPrimos++
+        somaPrimos += numero
     }
 
     numero++
 }
+
+console.log("Soma dos primos: ", somaPrimos)
 
