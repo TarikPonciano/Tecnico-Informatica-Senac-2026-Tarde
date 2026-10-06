@@ -23,4 +23,6 @@ while (true){
         }else {
             console.log("Você digitou uma opção inválida.")
         }
+
+        await input({message:"TECLE ENTER PARA CONTINUAR"})
 }
