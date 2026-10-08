@@ -21,10 +21,14 @@ while (true){
         continue
     }
 
+    if (temperatura < -50 || temperatura > 50){
+        console.log("DIGITE UMA TEMPERATURA NO INTERVALO DE -50°C a 50°C")
+        continue
+    }
+
     somaTemp += temperatura
     qtdTemp += 1
 
-    
 }
 
 mediaTemp = somaTemp/qtdTemp
