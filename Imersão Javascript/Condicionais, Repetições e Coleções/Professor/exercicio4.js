@@ -6,6 +6,8 @@ import { input, number } from "@inquirer/prompts"
 
 let totalVenda = 0
 
+let pedidos = ""
+
 while (true) {
     console.log(`
         
@@ -47,6 +49,7 @@ while (true) {
         let quantidade = await number({message:"Digite quantas unidades deseja: "})
 
         totalVenda += (preco * quantidade)
+        pedidos += `${cod} | ${nome} | ${preco.toLocaleString("pt-BR", {style:"currency", currency:"BRL"})} | ${quantidade} | ${(preco*quantidade).toLocaleString("pt-BR", {style:"currency", currency:"BRL"})} \n`
 
 
         let continuar = await input({message:"DESEJA COMPRAR OUTRO PRODUTO? (S/N)"})
@@ -58,4 +61,23 @@ while (true) {
         
 }
 
+let desconto = 0
+if (totalVenda >= 200){
+    totalVenda = totalVenda - 15
+    desconto = 15
+    
+}else if (totalVenda >= 100){
+    totalVenda = totalVenda - 10  
+    desconto = 10
+}
+
+console.log(`
+NOTA FISCAL
+
+COD | NOME | PREÇO | QTD | TOTAL
+${pedidos}
+
+
+DESCONTO: -R$ ${desconto.toFixed(2)}
+    `)
 console.log(`Total a Pagar: ${totalVenda.toLocaleString("pt-BR", {style:"currency", currency:"BRL"})}`)
