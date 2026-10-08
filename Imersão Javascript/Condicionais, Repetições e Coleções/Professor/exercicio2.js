@@ -1,4 +1,4 @@
-// 2. Usando while(true) faça um programa de coleta de temperaturas. O programa deverá pedir uma temperatura em Celsius, quando o usuário digitar "SAIR", a coleta deverá ser encerrada e a média das temperaturas inseridas deverá ser calculada e exibida no terminal. Só devem ser aceitas temperaturas no intervalo de -50 a 50 graus celsius.
+// 2. Usando while(true) faça um programa de coleta de temperaturas. O programa deverá pedir uma temperatura em Celsius, quando o usuário digitar "SAIR", a coleta deverá ser encerrada e a média das temperaturas inseridas deverá ser calculada e exibida no terminal. Só devem ser aceitas temperaturas no intervalo de -50 a 50 graus celsius, do contrário exiba uma mensagem de erro.
 
 import { input, number } from "@inquirer/prompts"
 
