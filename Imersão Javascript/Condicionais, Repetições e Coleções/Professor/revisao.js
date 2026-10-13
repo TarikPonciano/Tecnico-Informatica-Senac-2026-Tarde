@@ -2,7 +2,7 @@
 
 // Crie um Sistema de RH
 
-// 1. O programa deverá pedir as seguintes informações de um funcionário: Nome, CPF, Cargo, Departamento, Salário e CPF
+// 1. O programa deverá pedir as seguintes informações de um funcionário: Nome, CPF, Cargo, Departamento, Salário
 
 // 2. Exiba uma ficha contendo as informações do funcionário cadastrado. Ex:
 /*
