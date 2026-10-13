@@ -16,7 +16,7 @@ Cargo: {cargo}
 --------------------------
 */
 
-// 3. Adicione validações para os campos, exiba um mensagem de erro caso alguma das informações fique vazia. Para o campo de salário verifique se o salário é um número positivo acima do salário mínimo (R$ 1621.00), para o campo CPF verifique se o tamanho do CPF é exatamente 11.
+// 3. Adicione validações para os campos, exiba um mensagem de erro caso alguma das informações fique vazia. Para o campo de salário verifique se o salário é um número positivo igual ou maior ao salário mínimo (R$ 1621.00), para o campo CPF verifique se o tamanho do CPF é exatamente 11.
 
 // 4. Caso o usuário cometa algum erro no cadastro das informações, mostre um erro e peça para a pessoa tentar novamente
 
