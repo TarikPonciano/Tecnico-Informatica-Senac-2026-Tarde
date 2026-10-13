@@ -1,6 +1,6 @@
 import { input, number } from "@inquirer/prompts"
 
-let nome = await input({message: "Digite o nome do funcionário"})
+let nome = await input({message: "Digite o nome do funcionário", validate: (value) => value !== ""})
 let cpf = await input({message: "Digite o cpf do funcionário"})
 let cargo =  await input({message: "Digite o cargo do funcionário"})
 let departamento = await input({message: "Digite o departamento do funcionário"})
