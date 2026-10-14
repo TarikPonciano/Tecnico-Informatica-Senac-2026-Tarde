@@ -10,7 +10,7 @@ while (true) {
     nome = await input({ message: "Digite o nome do funcionário" })
     if (!nome) {
         console.error("NOME VAZIO DETECTADO. TENTE NOVAMENTE")
-    } else {
+    } else if (nome.length < 3) {
         break
     }
 }

@@ -6,6 +6,8 @@ let cargo =  await input({message: "Digite o cargo do funcionário"})
 let departamento = await input({message: "Digite o departamento do funcionário"})
 let salario = await number({message: "Digite o salário do funcionário", step:0.01})
 
+
+
 if (!nome || !cpf || !cargo || !departamento || !salario){
     console.error("TODOS OS CAMPOS PRECISAM SER PREENCHIDOS!")
 }

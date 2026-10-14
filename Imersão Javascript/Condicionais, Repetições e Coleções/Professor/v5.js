@@ -1,4 +1,5 @@
 import { input, number } from "@inquirer/prompts"
+
 while (true) {
     let nome
     let cargo
@@ -71,4 +72,21 @@ Departamento: ${departamento}
 Salário: ${salario.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
     
 `)
+    let finalizar
+
+    while (true) {
+
+        finalizar = await input({ message: "DESEJA FINALIZAR? (S/N)" })
+
+        if (finalizar === "S" || finalizar === "N"){
+            break
+        }else{
+            console.error("DIGITE APENAS (S) ou (N)")
+        }
+    }
+
+    if (finalizar === "S"){
+        console.warn("FINALIZANDO O PROGRAMA...")
+        break
+    }
 }
