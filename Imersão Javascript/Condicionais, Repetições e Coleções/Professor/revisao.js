@@ -26,4 +26,4 @@ Cargo: {cargo}
 
 //7. Ao final do programa exiba uma lista numerada com o nome e cargo de todos os funcionários cadastrados
 
-//8. Adapte o código para exibir um menu de opções onde o usuário pode escolher entre Adicionar um novo funcionário ou ver os funcionários já cadastrados
+//8. Adapte o código para exibir um menu de opções onde o usuário pode escolher entre Adicionar um novo funcionário ou ver o resumo da folha
