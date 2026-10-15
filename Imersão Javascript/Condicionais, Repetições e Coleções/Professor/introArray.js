@@ -7,7 +7,7 @@ console.log(animais)
 console.log("------------------------------------")
 // 2. Permita que o usuário escreva o nome de um novo animal e adicione na lista. Imprima a nova lista. (.push())
 
-let novoAnimal = await input({message:"Digite o nome de um animal: "})
+let novoAnimal = await input({ message: "Digite o nome de um animal: " })
 
 animais.push(novoAnimal)
 
@@ -18,7 +18,7 @@ console.log("------------------------------------")
 
 console.log(animais[0])
 
-console.log(animais[animais.length-1])
+console.log(animais[animais.length - 1])
 
 console.log(animais[2])
 console.log("------------------------------------")
@@ -28,8 +28,8 @@ console.log("------------------------------------")
 // 2. Cachorro
 // ...
 
-for (let i = 0; i < animais.length; i++){
-    console.log(`${i+1}. ${animais[i]}`)
+for (let i = 0; i < animais.length; i++) {
+    console.log(`${i + 1}. ${animais[i]}`)
 
 }
 
@@ -39,14 +39,22 @@ for (let i = 0; i < animais.length; i++){
 //     contador += 1
 // }
 
-// animais.forEach((animal,i) => {
-//     console.log(`${i+1} ${animal}`)
-// })
+
+
+animais.forEach((animal,i) => {
+    console.log(`${i+1} ${animal}`)
+})
 console.log("------------------------------------")
 // 5. Imprima somente os animais que começarem com vogais
 
-for (let i = 0; i < animais.length; i++){
+// for (let i = 0; i < animais.length; i++) {
 
-    if (animais[i][0] == "A" || animais[i][0] == "E" || animais[i][0] == "I" || animais[i][0] == "O" || animais[i][0] == "U")
-    console.log(`${i+1}. ${animais[i]}`)
+//     if (animais[i][0] == "A" || animais[i][0] == "E" || animais[i][0] == "I" || animais[i][0] == "O" || animais[i][0] == "U")
+//         console.log(`${i + 1}. ${animais[i]}`)
+// }
+
+for (let i = 0; i < animais.length; i++) {
+
+    if (["A","E","I","O","U"].includes(animais[i][0].toUpperCase()))
+        console.log(`${i + 1}. ${animais[i]}`)
 }
