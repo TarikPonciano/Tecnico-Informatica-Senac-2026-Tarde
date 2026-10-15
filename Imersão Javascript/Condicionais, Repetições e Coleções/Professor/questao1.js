@@ -9,4 +9,8 @@ for (let i = 0; i < 5; i++){
 
 }
 
+//Caso deseje organizar em ordem crescente (EXTRA)
+numeros.sort((a,b) => a-b)
+
 console.log("Números cadastrados:", numeros)
+
