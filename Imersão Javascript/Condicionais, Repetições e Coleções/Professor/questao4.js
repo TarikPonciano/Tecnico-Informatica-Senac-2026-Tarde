@@ -40,11 +40,14 @@ while (true){
 
         console.log("LISTA DE ALUNOS:")
 
+        let somaNotas = 0
+
         for (let i = 0; i < alunos.length; i++){
             console.log(`${i+1}. ${alunos[i]} - ${notas[i].toFixed(1)}`)
+            somaNotas += notas[i]
         }
 
-        let mediaTurma = notas.reduce((soma,nota) => soma+nota)/notas.length
+        let mediaTurma = somaNotas/notas.length
 
         console.log(`Média da Turma: ${mediaTurma.toFixed(2)}`)
 
