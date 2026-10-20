@@ -22,6 +22,20 @@ while (true) {
 
     if (op === "1") {
         console.log("CADASTRO DE PALAVRA")
+
+        let novaPalavra = await input({message:"Digite uma nova palavra:"})
+        let novoSignificado = await input({message:"Digite o significado da nova palavra: "})
+
+        if(glossario[novaPalavra]){
+            console.warn("PALAVRA JÁ CADASTRADA")
+        }else{
+            glossario[novaPalavra] = novoSignificado
+        }
+
+        console.log(glossario)
+
+
+
     } else if (op === "2") {
         console.log("BUSCAR PALAVRA")
     } else if (op === "3") {
