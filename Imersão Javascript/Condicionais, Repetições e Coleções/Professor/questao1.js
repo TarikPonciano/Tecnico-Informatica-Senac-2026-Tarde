@@ -1,5 +1,6 @@
 import { input, number } from "@inquirer/prompts"
 
+
 let nome = await input({message:"Digite seu nome: "})
 let idade = await number({message:"Digite seu idade: "})
 let cidade = await input({message:"Digite seu cidade: "})
@@ -11,6 +12,8 @@ let pessoa = {
     "cidade": cidade,
     "estado": estado
 }
+
+pessoa["país"] = "Brasil"
 
 // let pessoaAlternativo = {
 //     nome,
