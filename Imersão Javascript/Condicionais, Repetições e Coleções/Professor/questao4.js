@@ -38,6 +38,14 @@ while (true) {
 
     } else if (op === "2") {
         console.log("BUSCAR PALAVRA")
+        let palavraBuscada = await input({message:"Digite a palavra desejada:"})
+
+        if (glossario[palavraBuscada]){
+            console.log(`${palavraBuscada} - ${glossario[palavraBuscada]}`)
+        }else{
+            console.log("PALAVRA BUSCADA NÃO FOI CADASTRADA")
+        }
+
     } else if (op === "3") {
         console.log("LISTAR PALAVRAS")
     } else if (op === "0") {
