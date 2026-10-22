@@ -14,6 +14,42 @@ function verCatalogo() {
     }
 }
 
+async function escolherFilme() {
+    let idFilme = await number({ message: "DIGITE O ID DO FILME DESEJADO:" })
+
+    // Esta versão comentada mostra como procurar o filme com um laço manual:
+    // começa sem resultado e percorre o array até encontrar o ID.
+    // let filmeSelecionado = undefined
+
+    // for (let i = 0; i < filmes.length; i++){
+    //     if(idFilme === filmes[i].id){
+    //         filmeSelecionado = filmes[i]
+    //     }
+    // }
+
+    // `find` percorre o array e retorna o primeiro filme que atende à condição.
+    // Se nenhum ID corresponder, o resultado será `undefined`.
+    let filmeSelecionado = filmes.find((filme) => filme.id === idFilme)
+
+    // Um valor `undefined` é falsy, então este teste identifica ID não encontrado.
+    if (!filmeSelecionado) {
+        console.warn("ID DIGITADO NÃO CORRESPONDE A UM FILME!")
+    } else {
+        // Como o filme foi encontrado, podemos exibir os campos do objeto.
+        console.log(`
+            FICHA DO FILME
+
+            ID: ${filmeSelecionado.id}
+            Titulo: ${filmeSelecionado.titulo}
+            Classificação: ${filmeSelecionado.classificacao}
+            Duracao: ${filmeSelecionado.duracao}
+            Sessoes: ${filmeSelecionado.sessoes.join(" - ")}    
+                `)
+    }
+
+    return filmeSelecionado
+}
+
 
 // Cada filme é um objeto com os mesmos campos. O array reúne todos os filmes.
 let filmes = [
@@ -67,7 +103,7 @@ while (true) {
         let duracao = await number({ message: "Digite a duração do filme em minutos:" })
         let classificacao = await input({ message: "Digite a classificação do filme:" })
         // Separa o texto digitado em um array usando o hífen como delimitador.
-        let sessoes = await input({ message: "Digite os horários da sessão, separados por '-':" }).split("-")
+        let sessoes = await input({ message: "Digite os horários da sessão, separados por '-':" })
 
         // Agrupa os dados relacionados em um único objeto.
         let novoFilme = {
@@ -75,7 +111,7 @@ while (true) {
             titulo: titulo,
             duracao: duracao,
             classificacao: classificacao,
-            sessoes: sessoes
+            sessoes: sessoes.split("-")
         }
 
         // `push` inclui o novo objeto no final do array de filmes.
@@ -96,7 +132,7 @@ while (true) {
 
         // READ (detalhe): mostra o catálogo para ajudar a escolher um ID.
         verCatalogo()
-        let idFilme = await number({message:"DIGITE O ID DO FILME DESEJADO:"})
+        let idFilme = await number({ message: "DIGITE O ID DO FILME DESEJADO:" })
 
         // Esta versão comentada mostra como procurar o filme com um laço manual:
         // começa sem resultado e percorre o array até encontrar o ID.
@@ -113,9 +149,9 @@ while (true) {
         let filmeSelecionado = filmes.find((filme) => filme.id === idFilme)
 
         // Um valor `undefined` é falsy, então este teste identifica ID não encontrado.
-        if(!filmeSelecionado){
+        if (!filmeSelecionado) {
             console.warn("ID DIGITADO NÃO CORRESPONDE A UM FILME!")
-        }else{
+        } else {
             // Como o filme foi encontrado, podemos exibir os campos do objeto.
             console.log(`
             FICHA DO FILME
@@ -131,9 +167,54 @@ while (true) {
 
     } else if (op === "4") {
         // UPDATE: esta opção está reservada para implementar a edição de filmes.
+        verCatalogo()
+        let filmeSelecionado = await escolherFilme()
+
+
+        if (filmeSelecionado) {
+            let titulo = await input({ message: "Titulo: ", default: filmeSelecionado.titulo })
+
+            let duracao = await number({ message: "Duração: ", default: filmeSelecionado.duracao })
+
+            let classificacao = await input({ message: "Classificação: ", default: filmeSelecionado.classificacao })
+
+            let sessoes = await input({message: "Sessões: ", default:filmeSelecionado.sessoes.join("-"), prefill:"tab"})
+
+            filmeSelecionado.titulo = titulo
+            filmeSelecionado.duracao = duracao
+            filmeSelecionado.classificacao = classificacao
+            filmeSelecionado.sessoes = sessoes.split("-")
+
+            console.log("FILME ATUALIZADO COM SUCESSO")
+        }
+
 
     } else if (op === "5") {
-        // DELETE: esta opção está reservada para implementar a remoção de filmes.
+
+        verCatalogo()
+
+        let filmeSelecionado = await escolherFilme()
+
+        //filmes = filmes.filter((filme) => filme !== filmeSelecionado )
+
+        if (filmeSelecionado) {
+            let posicaoFilme = filmes.indexOf(filmeSelecionado)
+
+            // for (let i = 0; i< filmes.length ; i++){
+            //     if (filmes[i].id === filmeSelecionado.id){
+            //         posicaoFilme = i
+            //         break
+            //     }
+            // }
+
+            if (posicaoFilme === -1) {
+                console.log("FILME NÃO FOI ENCONTRADO")
+            } else {
+                filmes.splice(posicaoFilme, 1)
+                console.log("FILME REMOVIDO COM SUCESSO!", filmeSelecionado)
+            }
+
+        }
 
     } else if (op === "0") {
         // `break` interrompe o while e encerra o sistema.
