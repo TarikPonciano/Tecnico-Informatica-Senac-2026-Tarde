@@ -14,11 +14,12 @@ function verCatalogo() {
     }
 }
 
+// Pede um ID, procura o filme correspondente e devolve o objeto encontrado.
+// Como a função faz uma pergunta no terminal, ela é assíncrona e usa `await`.
 async function escolherFilme() {
     let idFilme = await number({ message: "DIGITE O ID DO FILME DESEJADO:" })
 
-    // Esta versão comentada mostra como procurar o filme com um laço manual:
-    // começa sem resultado e percorre o array até encontrar o ID.
+    // Alternativa didática: procurar o filme manualmente com um laço.
     // let filmeSelecionado = undefined
 
     // for (let i = 0; i < filmes.length; i++){
@@ -126,7 +127,7 @@ while (true) {
         for (let i = 0; i < filmes.length; i++) {
             let filmeAtual = filmes[i]
             console.log(`${filmeAtual.id} | ${filmeAtual.titulo} | ${filmeAtual.duracao} min | ${filmeAtual.classificacao} | ${filmeAtual.sessoes.join(" - ")}`)
-        } // IMPLEMENTADO NA FUNÇÃO verCatalogo()
+        } // A função verCatalogo() também faz esta listagem e é usada em outras opções.
 
     } else if (op === "3") {
 
@@ -134,8 +135,7 @@ while (true) {
         verCatalogo()
         let idFilme = await number({ message: "DIGITE O ID DO FILME DESEJADO:" })
 
-        // Esta versão comentada mostra como procurar o filme com um laço manual:
-        // começa sem resultado e percorre o array até encontrar o ID.
+        // Alternativa didática: procurar o filme manualmente com um laço.
         // let filmeSelecionado = undefined
 
         // for (let i = 0; i < filmes.length; i++){
@@ -166,20 +166,23 @@ while (true) {
 
 
     } else if (op === "4") {
-        // UPDATE: esta opção está reservada para implementar a edição de filmes.
+        // UPDATE: primeiro seleciona o filme que terá seus dados alterados.
         verCatalogo()
         let filmeSelecionado = await escolherFilme()
 
 
         if (filmeSelecionado) {
+            // Os valores atuais aparecem como padrão; o usuário pode confirmar
+            // ou informar novos valores para cada campo.
             let titulo = await input({ message: "Titulo: ", default: filmeSelecionado.titulo })
 
             let duracao = await number({ message: "Duração: ", default: filmeSelecionado.duracao })
 
             let classificacao = await input({ message: "Classificação: ", default: filmeSelecionado.classificacao })
-
             let sessoes = await input({message: "Sessões: ", default:filmeSelecionado.sessoes.join("-"), prefill:"tab"})
 
+            // A variável aponta para o próprio objeto que está dentro do array;
+            // atualizar suas propriedades altera o filme cadastrado.
             filmeSelecionado.titulo = titulo
             filmeSelecionado.duracao = duracao
             filmeSelecionado.classificacao = classificacao
@@ -191,15 +194,18 @@ while (true) {
 
     } else if (op === "5") {
 
+        // DELETE: seleciona qual filme será removido do catálogo.
         verCatalogo()
 
         let filmeSelecionado = await escolherFilme()
 
-        //filmes = filmes.filter((filme) => filme !== filmeSelecionado )
+        // Outra forma seria criar um novo array sem o filme selecionado usando filter.
 
         if (filmeSelecionado) {
+            // `indexOf` encontra a posição do mesmo objeto dentro do array.
             let posicaoFilme = filmes.indexOf(filmeSelecionado)
 
+            // Alternativa didática: localizar a posição manualmente com um laço.
             // for (let i = 0; i< filmes.length ; i++){
             //     if (filmes[i].id === filmeSelecionado.id){
             //         posicaoFilme = i
@@ -210,6 +216,7 @@ while (true) {
             if (posicaoFilme === -1) {
                 console.log("FILME NÃO FOI ENCONTRADO")
             } else {
+                // `splice` remove um elemento do array a partir da posição encontrada.
                 filmes.splice(posicaoFilme, 1)
                 console.log("FILME REMOVIDO COM SUCESSO!", filmeSelecionado)
             }
