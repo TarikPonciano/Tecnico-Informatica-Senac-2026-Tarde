@@ -180,7 +180,7 @@ while (true) {
 
             let classificacao = await input({ message: "Classificação: ", default: filmeSelecionado.classificacao })
             let sessoes = await input({message: "Sessões: ", default:filmeSelecionado.sessoes.join("-"), prefill:"tab"})
-
+            
             // A variável aponta para o próprio objeto que está dentro do array;
             // atualizar suas propriedades altera o filme cadastrado.
             filmeSelecionado.titulo = titulo
