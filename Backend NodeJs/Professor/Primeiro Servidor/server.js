@@ -6,6 +6,13 @@ import express from "express"
 // Cria uma instância da aplicação Express
 const app = express()
 
+app.use((req, res, next) => {
+    console.log("REQUISIÇÃO DETECTADA: ",req.method, req.url)
+    next()
+})
+
+app.use(express.json())
+
 // Define uma rota GET para a página inicial
 app.get("/", (req, res) => {
     // Envia uma resposta em HTML quando a rota é acessada
