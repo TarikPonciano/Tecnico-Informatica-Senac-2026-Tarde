@@ -57,6 +57,10 @@ app.get("/alunos/:id", (req, res) => {
 app.post("/alunos", (req,res) =>{
     // let alunoNovo = req.body
 
+    if (!req.body){
+        return res.status(400).json({message:"NENHUMA INFORMAÇÃO RECEBIDA"})
+    }
+
     let {nome, turma} = req.body
 
     if (!nome || !turma){
@@ -70,6 +74,34 @@ app.post("/alunos", (req,res) =>{
 
         res.status(201).json({"aluno-cadastrado":alunoNovo, message:"CADASTRO REALIZADO COM SUCESSO"})
 
+    }
+})
+
+app.put("/alunos/:id", (req,res) => {
+    let idAluno = Number(req.params.id)
+
+    let aluno = alunos.find((a) => a.id === idAluno)
+
+    if (!aluno){
+        res.status(404).json({message:"ID Informado Não Existe"})
+    }
+    else{
+
+        if (!req.body){
+            return res.status(400).json({message:"NÃO FORAM ENVIADAS INFORMAÇÕES PARA ATUALIZAR"})
+        }
+
+        let {nome, turma} = req.body
+
+        if (!nome || !turma){
+            res.status(400).json({message:"FALTAM INFORMAÇÕES PARA EDIÇÃO"})
+        }else{
+            
+            aluno.nome = nome
+            aluno.turma = turma
+
+            res.status(204).json({message:"ALUNO ATUALIZADO COM SUCESSO"})
+        }
     }
 })
 
