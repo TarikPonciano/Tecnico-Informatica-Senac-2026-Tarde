@@ -15,7 +15,7 @@ app.use(express.json())
 
 let alunos = [
     { id: 1, nome: 'Ana', turma: 'TDS-01' },
-    { id: 2, nome: 'Bruno', turma: 'TDS-01' }
+    { id: 2, nome: 'Bruno', turma: 'TDS-01'}
 ];
 let proximoId = 3;
 
@@ -52,6 +52,25 @@ app.get("/alunos/:id", (req, res) => {
         })
     }
     
+})
+
+app.post("/alunos", (req,res) =>{
+    // let alunoNovo = req.body
+
+    let {nome, turma} = req.body
+
+    if (!nome || !turma){
+        res.status(400).json({message:"Não foi possível cadastrar o aluno.", error:"NÃO FOI INFORMADO NOME OU TURMA!"}) 
+    } else{
+
+        let alunoNovo = {id: proximoId, nome, turma}
+        proximoId++
+
+        alunos.push(alunoNovo)
+
+        res.status(201).json({"aluno-cadastrado":alunoNovo, message:"CADASTRO REALIZADO COM SUCESSO"})
+
+    }
 })
 
 // Inicia o servidor na porta 3000
