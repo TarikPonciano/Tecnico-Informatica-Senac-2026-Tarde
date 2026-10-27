@@ -100,8 +100,24 @@ app.put("/alunos/:id", (req,res) => {
             aluno.nome = nome
             aluno.turma = turma
 
-            res.status(204).json({message:"ALUNO ATUALIZADO COM SUCESSO"})
+            res.status(200).json({message:"ALUNO ATUALIZADO COM SUCESSO", dados:aluno})
         }
+    }
+})
+
+app.delete("/alunos/:id", (req,res) => {
+    let idAluno = Number(req.params.id)
+
+    let aluno = alunos.find((a) => a.id === idAluno)
+
+    if (!aluno){
+        res.status(404).json({message:"ID Informado Não Existe"})
+    }
+    else{
+        let posicaoAluno = alunos.indexOf(aluno)
+        alunos.splice(posicaoAluno, 1)
+
+        res.status(200).json({message: "Aluno removido com sucesso", removido: aluno })
     }
 })
 
