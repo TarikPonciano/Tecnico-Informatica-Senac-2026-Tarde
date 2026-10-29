@@ -30,7 +30,18 @@ app.get("/contatos", async (req,res) => {
 })
 
 app.get("/contatos/:id", async(req,res) =>{
-    
+    let idAtual = Number(req.params.id)
+
+    let contatos = await lerContatos()
+
+    let contato = contatos.find((c) => c.id === idAtual)
+
+    if (!contato){
+        res.status(404).json({message:"CONTATO NÃO IDENTIFICADO!"})
+    } else{
+        res.status(200).json(contato)
+    }
+
 })
 
 
