@@ -1,7 +1,10 @@
 import express from "express";
 import {readFile, writeFile} from "node:fs/promises";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
-const ARQUIVO = "./contatos.json"
+const PASTA = path.dirname(fileURLToPath(import.meta.url))
+const ARQUIVO = path.join(PASTA, "contatos.json")
 
 async function lerContatos(){
     let texto = await readFile(ARQUIVO, "utf-8")
@@ -16,6 +19,13 @@ async function salvarContatos(contatos){
 }
 
 
+const app = express()
+
+app.use(express.json())
+
+app.listen(3000, () => {
+    console.log("SERVIDOR INICIADO NO ENDEREÇO http://localhost:3000")
+})
 
 
 
