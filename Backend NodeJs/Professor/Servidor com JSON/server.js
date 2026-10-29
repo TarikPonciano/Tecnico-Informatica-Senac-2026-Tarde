@@ -23,6 +23,18 @@ const app = express()
 
 app.use(express.json())
 
+app.get("/contatos", async (req,res) => {
+    let contatos = await lerContatos()
+
+    res.status(200).json(contatos)
+})
+
+app.get("/contatos/:id", async(req,res) =>{
+    
+})
+
+
+
 app.listen(3000, () => {
     console.log("SERVIDOR INICIADO NO ENDEREÇO http://localhost:3000")
 })
