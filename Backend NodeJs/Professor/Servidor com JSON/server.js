@@ -27,6 +27,12 @@ app.use(express.json())
 app.get("/contatos", async (req,res) => {
     let contatos = await lerContatos()
 
+    let {nome} = req.query
+
+    if (nome){
+        contatos = contatos.filter((c) => c.nome.includes(nome))
+    }
+
     res.status(200).json(contatos)
 })
 
@@ -57,7 +63,7 @@ app.post("/contatos", async (req,res) =>{
     let {id, nome, telefone} = req.body
 
     if (!id || !nome || !telefone){
-        res.status(400).json({message:"INFORMAÇÔES FALTANTE. ENVIE ID, NOME E TELEFONE."})
+        res.status(400).json({message:"INFORMAÇÕES FALTANTE. ENVIE ID, NOME E TELEFONE."})
     }else{
         // 1. Ler o arquivo
         let contatos = await lerContatos()
