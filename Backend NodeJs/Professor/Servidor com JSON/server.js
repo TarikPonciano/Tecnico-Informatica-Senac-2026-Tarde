@@ -6,6 +6,7 @@ import { fileURLToPath } from "node:url";
 const PASTA = path.dirname(fileURLToPath(import.meta.url))
 const ARQUIVO = path.join(PASTA, "contatos.json")
 
+
 async function lerContatos(){
     let texto = await readFile(ARQUIVO, "utf-8")
 
@@ -32,6 +33,10 @@ app.get("/contatos", async (req,res) => {
 app.get("/contatos/:id", async(req,res) =>{
     let idAtual = Number(req.params.id)
 
+    if (idAtual === NaN){
+        return res.status(400).json({message:"O PARAMETRO ACEITO É APENAS NÚMERO!"})
+    }
+
     let contatos = await lerContatos()
 
     let contato = contatos.find((c) => c.id === idAtual)
@@ -41,7 +46,6 @@ app.get("/contatos/:id", async(req,res) =>{
     } else{
         res.status(200).json(contato)
     }
-
 })
 
 
