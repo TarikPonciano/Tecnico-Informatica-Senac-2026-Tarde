@@ -48,6 +48,34 @@ app.get("/contatos/:id", async(req,res) =>{
     }
 })
 
+app.post("/contatos", async (req,res) =>{
+
+    if (!req.body){
+        return res.status(400).json({message:"NÃO FORAM ENVIADAS INFORMAÇÕES PARA CADASTRO."})
+    }
+
+    let {id, nome, telefone} = req.body
+
+    if (!id || !nome || !telefone){
+        res.status(400).json({message:"INFORMAÇÔES FALTANTE. ENVIE ID, NOME E TELEFONE."})
+    }else{
+        // 1. Ler o arquivo
+        let contatos = await lerContatos()
+
+        // 2. Manipular os dados
+        let novoContato = {
+            id, nome, telefone
+        }
+        contatos.push(novoContato)
+
+        // 3. Salvar os dados no arquivo
+        await salvarContatos(contatos)
+
+        // 4. Mandar resposta ao servidor
+        res.send(201).status({message:"CONTATO CADASTRADO COM SUCESSO", contato: novoContato})
+    }
+})
+
 
 
 app.listen(3000, () => {
