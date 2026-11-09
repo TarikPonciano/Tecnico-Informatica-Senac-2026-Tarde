@@ -11,8 +11,7 @@ VALUES(15, 'Algoritmos em Python', 2024, '9786500000106', 4);
 
 -- 3. Registre o empréstimo 6: livro 15 para a Júlia (2), informando só o código, o livro e o leitor.
 
-SELECT * FROM emprestimo
-JOIN livro ON emprestimo.livro_cod = livro.cod_livro;
+SELECT * FROM emprestimo;
 
 INSERT INTO emprestimo (cod_emprestimo, livro_cod, leitor_cod)
 VALUES (6, 15, 2);
