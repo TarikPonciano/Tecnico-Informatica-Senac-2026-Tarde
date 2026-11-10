@@ -11,7 +11,8 @@ VALUES(15, 'Algoritmos em Python', 2024, '9786500000106', 4);
 
 -- 3. Registre o empréstimo 6: livro 15 para a Júlia (2), informando só o código, o livro e o leitor.
 
-SELECT * FROM emprestimo;
+SELECT * FROM emprestimo
+ORDER BY cod_emprestimo;
 
 INSERT INTO emprestimo (cod_emprestimo, livro_cod, leitor_cod)
 VALUES (6, 15, 2);
@@ -27,3 +28,24 @@ WHERE cod_emprestimo = 5;
 UPDATE emprestimo 
 SET renovacoes_emprestimo = renovacoes_emprestimo + 1
 WHERE cod_emprestimo = 2;
+
+-- 6. O Rui (4) mudou de turma: agora é ADM-2.
+
+UPDATE leitor
+SET turma_cod = 'ADM-2'
+WHERE cod_leitor = 4;
+
+-- 7. O empréstimo 3 foi lançado por engano: remova.
+
+DELETE FROM emprestimo
+WHERE cod_emprestimo = 3;
+
+-- 8. O Rui Melo (4) saiu da escola. Exclua o leitor — na ordem certa.
+
+DELETE FROM emprestimo
+WHERE leitor_cod = 4;
+
+DELETE FROM leitor
+WHERE cod_leitor = 4;
+
+SELECT * FROM emprestimo;
