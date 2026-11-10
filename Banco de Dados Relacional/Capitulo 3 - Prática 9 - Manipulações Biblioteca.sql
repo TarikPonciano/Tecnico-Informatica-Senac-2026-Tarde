@@ -15,3 +15,15 @@ SELECT * FROM emprestimo;
 
 INSERT INTO emprestimo (cod_emprestimo, livro_cod, leitor_cod)
 VALUES (6, 15, 2);
+
+-- 4. A Lia devolveu Dom Casmurro hoje (empréstimo 5): registre a devolução com CURRENT_DATE.
+
+UPDATE emprestimo
+SET data_devolucao_emprestimo = CURRENT_DATE
+WHERE cod_emprestimo = 5;
+
+-- 5. O Marcos renovou o empréstimo 2: some 1 às renovações.
+
+UPDATE emprestimo 
+SET renovacoes_emprestimo = renovacoes_emprestimo + 1
+WHERE cod_emprestimo = 2;
