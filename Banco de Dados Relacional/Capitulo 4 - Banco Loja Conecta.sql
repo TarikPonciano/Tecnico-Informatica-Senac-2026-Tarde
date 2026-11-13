@@ -1,3 +1,4 @@
+-- database: :memory:
 -- CAPÍTULO 4 · SEÇÃO 04 · BANCO DA LOJA CONECTA (inicialização para o JOIN)
 -- Cria o banco usado nos exemplos e nas Práticas 6 a 8 do JOIN.
 -- Pode rodar quantas vezes quiser: o script apaga e recria tudo do zero.
