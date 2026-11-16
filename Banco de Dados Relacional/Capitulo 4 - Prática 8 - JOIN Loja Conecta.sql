@@ -44,3 +44,23 @@ JOIN clientes c ON c.cod_cliente = p.cod_cliente
 JOIN itens_pedido i ON i.cod_pedido = p.cod_pedido
 JOIN produtos pr ON pr.cod_produto = i.cod_produto
 WHERE p.status ILIKE 'cancelado';
+
+-- 6. Os clientes que nunca fizeram pedido.
+SELECT DISTINCT c.nome_cliente
+FROM clientes c
+LEFT JOIN pedidos p ON p.cod_cliente = c.cod_cliente
+WHERE p.cod_pedido IS NULL;
+
+-- 7. Os produtos que nunca foram vendidos.
+
+SELECT DISTINCT pr.nome_produto
+FROM produtos pr
+LEFT JOIN itens_pedido i ON i.cod_produto = pr.cod_produto
+WHERE i.cod_item IS NULL;
+
+-- 8. Os pedidos sem nenhum item.
+
+SELECT DISTINCT p.cod_pedido
+FROM pedidos p
+LEFT JOIN itens_pedido i ON i.cod_pedido = p.cod_pedido
+WHERE i.cod_item IS NULL;
