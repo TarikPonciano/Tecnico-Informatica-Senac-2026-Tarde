@@ -11,3 +11,26 @@ SELECT p.cod_pedido, c.nome_cliente, c.cidade_cliente, p.data_pedido
 FROM pedidos p
 LEFT JOIN clientes c ON c.cod_cliente = p.cod_cliente
 ORDER BY p.data_pedido ASC;
+
+-- 3. Os itens do pedido 100: produto, quantidade e preço pago.
+
+SELECT i.cod_pedido, pr.nome_produto, i.qtd, i.preco_unit, CONCAT('R$ ',(i.qtd *i.preco_unit)) AS "Subtotal"
+FROM itens_pedido i
+JOIN produtos pr ON pr.cod_produto = i.cod_produto
+WHERE i.cod_pedido = 100;
+
+
+-- SELECT SUM(i.qtd * i.preco_unit)
+-- FROM itens_pedido i
+-- JOIN produtos pr ON pr.cod_produto = i.cod_produto
+-- WHERE i.cod_pedido = 100;
+
+-- 4. Tudo o que a Mariana Costa comprou: pedido, data e produto.
+-- Dica: 4 tabelas.
+
+SELECT c.nome_cliente, p.cod_pedido, p.data_pedido, pr.nome_produto
+FROM clientes c
+JOIN pedidos p ON p.cod_cliente = c.cod_cliente
+JOIN itens_pedido i ON i.cod_pedido = p.cod_pedido
+JOIN produtos pr ON pr.cod_produto = i.cod_produto
+WHERE c.nome_cliente = 'Mariana Costa';
