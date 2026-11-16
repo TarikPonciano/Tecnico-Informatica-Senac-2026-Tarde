@@ -14,7 +14,8 @@ ORDER BY p.data_pedido ASC;
 
 -- 3. Os itens do pedido 100: produto, quantidade e preço pago.
 
-SELECT i.cod_pedido, pr.nome_produto, i.qtd, i.preco_unit, CONCAT('R$ ',(i.qtd *i.preco_unit)) AS "Subtotal"
+SELECT i.cod_pedido, pr.nome_produto, i.qtd,
+i.preco_unit, CONCAT('R$ ',(i.qtd *i.preco_unit)) AS "Subtotal"
 FROM itens_pedido i
 JOIN produtos pr ON pr.cod_produto = i.cod_produto
 WHERE i.cod_pedido = 100;
@@ -34,3 +35,12 @@ JOIN pedidos p ON p.cod_cliente = c.cod_cliente
 JOIN itens_pedido i ON i.cod_pedido = p.cod_pedido
 JOIN produtos pr ON pr.cod_produto = i.cod_produto
 WHERE c.nome_cliente = 'Mariana Costa';
+
+-- 5. Os pedidos cancelados, com o nome do cliente e os produtos.
+
+SELECT p.cod_pedido, c.nome_cliente, pr.nome_produto, p.status
+FROM pedidos p
+JOIN clientes c ON c.cod_cliente = p.cod_cliente
+JOIN itens_pedido i ON i.cod_pedido = p.cod_pedido
+JOIN produtos pr ON pr.cod_produto = i.cod_produto
+WHERE p.status ILIKE 'cancelado';
