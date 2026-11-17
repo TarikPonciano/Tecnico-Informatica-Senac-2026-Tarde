@@ -34,12 +34,12 @@ const sqlCriarLivro = `
 `
 
 const dadosGeneros = `
-INSERT INTO generos (nome) VALUES
+INSERT INTO generos (nome_genero) VALUES
 ('Romance'),
 ('Fantasia'),
 ('Ficção científica')`;
 const dadosLivros = `
-INSERT INTO livros (titulo, autor, ano, exemplares, genero_id) VALUES
+INSERT INTO livros (titulo_livro, autor_livro, ano_livro, exemplares_livro, genero_id) VALUES
 ('Dom Casmurro', 'Machado de Assis', 1899, 3, 1),
 ('Iracema', 'José de Alencar', 1865, 2, 1),
 ('O Hobbit', 'J. R. R. Tolkien', 1937, 4, 2),
@@ -65,6 +65,8 @@ try {
 
     await pool.query(dadosGeneros)
     await pool.query(dadosLivros)
+
+    console.log("DADOS INSERIDOS COM SUCESSO")
 
 } catch (error) {
     console.log("ERRO NA CRIAÇÃO DAS TABELAS")
