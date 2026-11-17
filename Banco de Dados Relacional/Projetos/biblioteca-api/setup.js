@@ -63,6 +63,9 @@ try {
 
     // Inserir dados nas tabelas
 
+    await pool.query(dadosGeneros)
+    await pool.query(dadosLivros)
+
 } catch (error) {
     console.log("ERRO NA CRIAÇÃO DAS TABELAS")
     console.log(error)
