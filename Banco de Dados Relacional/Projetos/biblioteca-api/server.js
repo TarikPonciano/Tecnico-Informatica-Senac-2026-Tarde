@@ -16,3 +16,30 @@ const pool = new PG.Pool(
         }
     }
 )
+
+const app = express()
+
+app.use(express.json())
+
+// Inicializar um servidor express e criar uma rota que exibe a versão do servidor do Postgresql
+
+app.get("/versao", async (req, res) => {
+
+    try{
+        const resultado = await pool.query("SELECT VERSION();")
+
+        res.status(200).send(resultado.rows[0].version)
+
+    }catch (error){
+        console.log(error)
+        res.status(500).json({message: "ERRO INTERNO DO SERVIDOR", error: error})
+    }
+
+})
+
+// Crie uma rota que exibe no navegador a lista de livros do banco de dados como json
+
+
+app.listen(3000, () => {
+    console.log("SERVIDOR INICIADO EM http://localhost:3000")
+})
