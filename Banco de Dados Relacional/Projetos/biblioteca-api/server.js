@@ -39,6 +39,17 @@ app.get("/versao", async (req, res) => {
 
 // Crie uma rota que exibe no navegador a lista de livros do banco de dados como json
 
+app.get("/livros", async (req,res) => {
+    try {
+        const resultado = await pool.query("SELECT * FROM LIVROS;")
+        res.status(200).json(resultado.rows)
+        
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({message: "ERRO INTERNO DO SERVIDOR", error: error})
+    }
+})
+
 
 app.listen(3000, () => {
     console.log("SERVIDOR INICIADO EM http://localhost:3000")
