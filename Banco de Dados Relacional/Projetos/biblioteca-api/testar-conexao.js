@@ -13,7 +13,7 @@ const pool = new PG.Pool(
     database: process.env.DB_NAME,
     ssl: {
         rejectUnauthorized: true,
-        ca: readFileSync('./ca.pem').toString
+        ca: readFileSync('./ca.pem').toString()
     }
    }
 )
