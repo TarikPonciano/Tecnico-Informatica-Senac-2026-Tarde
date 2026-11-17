@@ -2,8 +2,6 @@ import 'dotenv/config';
 import { readFileSync } from 'fs';
 import PG from 'pg';
 
-
-
 const pool = new PG.Pool(
    { 
     host: process.env.DB_HOST,
@@ -21,7 +19,7 @@ const pool = new PG.Pool(
 try {
     const resultado = await pool.query("SELECT VERSION();")
 
-    console.log(resultado)
+    console.log(resultado.rows[0].version)
     
 } catch (error) {
     console.log("Houve um erro na consulta!")
