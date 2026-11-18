@@ -50,7 +50,56 @@ app.get("/livros", async (req,res) => {
     }
 })
 
+// Implementem a rota de ver livro específico por id e monte a consulta de forma que seja possível ver o nome do genero do livro
+
+
+
+app.get("/generos", async (req,res) => {
+    try {
+        const resultado = await pool.query("SELECT * FROM GENEROS;")
+        res.status(200).json(resultado.rows)
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({message: "ERRO INTERNO DO SERVIDOR", error: error})
+    }
+})
+
+app.get("/generos/:id", async (req, res) => {
+    try {
+        const valores = [req.params.id]
+        const sql = `
+        SELECT * FROM GENEROS
+        WHERE id_genero = $1;
+        `
+        const resultado = await pool.query(sql, valores)
+
+        if (resultado.rows.length === 0){
+            return res.status(404).json({message:"GENERO NÃO ENCONTRADO"})
+        }
+
+        res.status(200).json(resultado.rows[0])
+
+        
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({message: "ERRO INTERNO DO SERVIDOR", error: error})
+    }
+})
+
+
+
 
 app.listen(3000, () => {
     console.log("SERVIDOR INICIADO EM http://localhost:3000")
 })
+
+
+// Código para encerrar as conexões com o banco de forma segura
+async function encerrar() {
+    await pool.end()
+    console.log("CONEXÃO FINALIZADA COM SUCESSO")
+    process.exit(0)
+}
+
+process.on("SIGINT", encerrar)
+process.on("SIGTERM", encerrar)
