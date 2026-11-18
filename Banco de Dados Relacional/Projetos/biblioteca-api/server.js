@@ -25,28 +25,28 @@ app.use(express.json())
 
 app.get("/versao", async (req, res) => {
 
-    try{
+    try {
         const resultado = await pool.query("SELECT VERSION();")
 
         res.status(200).send(resultado.rows[0].version)
 
-    }catch (error){
+    } catch (error) {
         console.log(error)
-        res.status(500).json({message: "ERRO INTERNO DO SERVIDOR", error: error})
+        res.status(500).json({ message: "ERRO INTERNO DO SERVIDOR", error: error })
     }
 
 })
 
 // Crie uma rota que exibe no navegador a lista de livros do banco de dados como json
 
-app.get("/livros", async (req,res) => {
+app.get("/livros", async (req, res) => {
     try {
         const resultado = await pool.query("SELECT * FROM LIVROS;")
         res.status(200).json(resultado.rows)
-        
+
     } catch (error) {
         console.log(error)
-        res.status(500).json({message: "ERRO INTERNO DO SERVIDOR", error: error})
+        res.status(500).json({ message: "ERRO INTERNO DO SERVIDOR", error: error })
     }
 })
 
@@ -62,27 +62,43 @@ app.get("/livros/:id", async (req, res) => {
         `
         const resultado = await pool.query(sql, valores)
 
-        if (resultado.rows.length === 0){
-            return res.status(404).json({message:"GENERO NÃO ENCONTRADO"})
+        if (resultado.rows.length === 0) {
+            return res.status(404).json({ message: "GENERO NÃO ENCONTRADO" })
         }
 
         res.status(200).json(resultado.rows[0])
 
-        
+
     } catch (error) {
         console.log(error)
-        res.status(500).json({message: "ERRO INTERNO DO SERVIDOR", error: error})
+        res.status(500).json({ message: "ERRO INTERNO DO SERVIDOR", error: error })
     }
 })
 
+app.post('/livros', async (req, res) => {
+    const { titulo, autor, ano, exemplares, genero_id } = req.body;
+    if (!titulo || !autor || !ano || !exemplares || !genero_id) {
+        return res.status(400).json({ erro: 'Faltam Informações' });
+    }
+    try {
+        const sql = 'INSERT INTO livros  VALUES (default, $1, $2, $3, $4, $5) RETURNING *';
+        const valores = [titulo, autor, ano, exemplares, genero_id];
+        const resultado = await pool.query(sql, valores);
+        res.status(201).json(resultado.rows[0]);
+    } catch (erro) {
+        console.error(erro.message);
+        res.status(500).json({ erro: 'Erro no banco de dados' });
+    }
+});
 
-app.get("/generos", async (req,res) => {
+
+app.get("/generos", async (req, res) => {
     try {
         const resultado = await pool.query("SELECT * FROM GENEROS;")
         res.status(200).json(resultado.rows)
     } catch (error) {
         console.log(error)
-        res.status(500).json({message: "ERRO INTERNO DO SERVIDOR", error: error})
+        res.status(500).json({ message: "ERRO INTERNO DO SERVIDOR", error: error })
     }
 })
 
@@ -95,18 +111,34 @@ app.get("/generos/:id", async (req, res) => {
         `
         const resultado = await pool.query(sql, valores)
 
-        if (resultado.rows.length === 0){
-            return res.status(404).json({message:"GENERO NÃO ENCONTRADO"})
+        if (resultado.rows.length === 0) {
+            return res.status(404).json({ message: "GENERO NÃO ENCONTRADO" })
         }
 
         res.status(200).json(resultado.rows[0])
 
-        
+
     } catch (error) {
         console.log(error)
-        res.status(500).json({message: "ERRO INTERNO DO SERVIDOR", error: error})
+        res.status(500).json({ message: "ERRO INTERNO DO SERVIDOR", error: error })
     }
 })
+
+app.post('/generos', async (req, res) => {
+    const { nome } = req.body;
+    if (!nome) {
+        return res.status(400).json({ erro: 'Informe o nome' });
+    }
+    try {
+        const sql = 'INSERT INTO generos (nome_genero) VALUES ($1) RETURNING *';
+        const valores = [nome];
+        const resultado = await pool.query(sql, valores);
+        res.status(201).json(resultado.rows[0]);
+    } catch (erro) {
+        console.error(erro.message);
+        res.status(500).json({ erro: 'Erro no banco de dados' });
+    }
+});
 
 
 
