@@ -8,7 +8,7 @@ const pool = new PG.Pool(
         host: process.env.DB_HOST,
         port: process.env.DB_PORT,
         user: process.env.DB_USER,
-        password: process.env.DB_PASS,
+        password: process.env.DB_PASSWORD,
         database: process.env.DB_NAME,
         ssl: {
             rejectUnauthorized: true,
@@ -21,11 +21,11 @@ const app = express()
 
 app.use(express.json())
 
-app.post("/pedidos", async (req, res) =>{
-    const {cod_cliente, itens} = req.body
+app.post("/pedidos", async (req, res) => {
+    const { cod_cliente, itens } = req.body
 
-    if (!cod_cliente || itens.length == 0){
-        return res.status(400).json({message: "Faltam informações para cadastrar o pedido."})
+    if (!cod_cliente || itens.length == 0) {
+        return res.status(400).json({ message: "Faltam informações para cadastrar o pedido." })
     }
 
     let client
@@ -33,14 +33,50 @@ app.post("/pedidos", async (req, res) =>{
     try {
         client = await pool.connect()
 
-    } catch (erro){
-        if (client){
-            client.query("ROLLBACK;")
-        }
-        return res.status(500).json({message:"Aconteceu um problema ao cadastrar a venda"})
+        console.log("CONECTADO")
         
+        await client.query("BEGIN;")
+
+        console.log("TRANSAÇÃO INICIADA")
+
+        const pedido = await client.query("INSERT INTO pedidos VALUES (default, $1, default) RETURNING cod_pedido;", [cod_cliente])
+
+        console.log("PEDIDO INSERIDO")
+
+        const cod_pedido = pedido.rows[0].cod_pedido
+
+
+        itens.forEach(async produto => {
+            const dados_produto = await client.query("SELECT preco FROM produtos WHERE cod_produto = $1;", [produto.cod_produto])
+
+            const preco_produto = dados_produto.rows[0].preco
+            console.log("PREÇO CONSULTADO")
+
+            await client.query("INSERT INTO itens_pedido VALUES (default, $1, $2, $3, $4);", [cod_pedido, produto.cod_produto, produto.qtd, preco_produto])
+
+            console.log("ITEM CADASTRADO")
+
+            await client.query("UPDATE produtos SET estoque = estoque - $1 WHERE cod_produto = $2;"[produto.qtd, produto.cod_produto])
+
+            console.log("CADASTRO ATUALIZADO")
+
+
+        });
+
+        await client.query("COMMIT;")
+
+        res.status(201).json({ message: "VENDA CADASTRADA COM SUCESSO" })
+
+
+    } catch (erro) {
+        if (client) {
+            await client.query("ROLLBACK;")
+        }
+        console.log(erro)
+        return res.status(500).json({ message: "Aconteceu um problema ao cadastrar a venda", erro: erro })
+
     } finally {
-        if (client){
+        if (client) {
             client.release()
         }
     }
