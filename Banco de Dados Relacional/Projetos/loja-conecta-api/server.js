@@ -21,6 +21,38 @@ const app = express()
 
 app.use(express.json())
 
+app.post("/pedidos", async (req, res) =>{
+    const {cod_cliente, itens} = req.body
+
+    if (!cod_cliente || itens.length == 0){
+        return res.status(400).json({message: "Faltam informações para cadastrar o pedido."})
+    }
+
+    let client
+
+    try {
+        client = await pool.connect()
+
+    } catch (erro){
+        if (client){
+            client.query("ROLLBACK;")
+        }
+        return res.status(500).json({message:"Aconteceu um problema ao cadastrar a venda"})
+        
+    } finally {
+        if (client){
+            client.release()
+        }
+    }
+
+
+
+
+
+
+
+})
+
 
 
 
