@@ -56,7 +56,7 @@ app.get("/livros/:id", async (req, res) => {
     try {
         const valores = [req.params.id]
         const sql = `
-        SELECT l.id_livro, l.titulo_livro, l.autor_livro, l.ano_livro, l.exemplares_livro, l.genero_id, g.nome_genero FROM LIVROS l
+        SELEC=T l.id_livro, l.titulo_livro, l.autor_livro, l.ano_livro, l.exemplares_livro, l.genero_id, g.nome_genero FROM LIVROS l
         JOIN generos g ON g.id_genero = l.genero_id
         WHERE id_livro = $1;
         `
@@ -139,8 +139,6 @@ app.post('/generos', async (req, res) => {
         res.status(500).json({ erro: 'Erro no banco de dados' });
     }
 });
-
-
 
 
 app.listen(3000, () => {
